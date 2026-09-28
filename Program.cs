@@ -91,6 +91,67 @@ FormatCharacter("da1", 50, armor: 100);
 Console.WriteLine();
 FormatCharacter(armor: 60, health: 40, name: "da2", damage: 90);
 
+// ref даст нам изменить переменную из вне
+void FullHealth(ref int health)
+{
+    health = 100;
+}
+
+// ._.
+int CalculateDamage(int damage)
+{
+    return damage + 50; // bounska
+}
+
+// ну out ибо нам надо вернуть сразу два результата
+bool TryUseSkill(int damage, out int newDamage)
+{
+    if (damage == 0)
+    {
+        newDamage = 0;
+        return false;
+    }
+
+    newDamage = damage * 2;
+
+    return true;
+}
+
+// in ибо нам надо readonly а также сразу необязательный параметр настроек вывода
+void CharacterStat(in CharacterStats stats, bool isDetailed = false) {
+    Console.WriteLine($"detailed: {isDetailed}");
+
+    if (isDetailed)
+    {
+        Console.WriteLine($"HP: {stats.Health}");
+        Console.WriteLine($"Урон: {stats.Damage}");
+        Console.WriteLine($"Броня: {stats.Armor}");
+        Console.WriteLine($"Name: {stats.Name}");
+    }
+}
+
+Console.WriteLine();
+
+CharacterStats stat = new CharacterStats {Name = "da", Health = 40, Armor = 50, Damage = 70};
+
+FullHealth(ref stat.Health);
+Console.WriteLine(stat.Health);
+
+int newDmg = CalculateDamage(stat.Damage);
+Console.WriteLine(newDmg);
+
+if (TryUseSkill(stat.Damage, out int newDamage))
+{
+    Console.WriteLine(newDamage);
+}
+else
+{
+    Console.WriteLine("damage = 0!");
+}
+
+CharacterStat(in stat);
+CharacterStat(isDetailed: true, stats: in stat);
+
 struct CharacterStats {
     public string Name;
     public int Health;
