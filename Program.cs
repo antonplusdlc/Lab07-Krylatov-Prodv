@@ -152,6 +152,56 @@ else
 CharacterStat(in stat);
 CharacterStat(isDetailed: true, stats: in stat);
 
+// Самостоятельные задания (банк)
+
+void SwapBalances(ref int balance1, ref int balance2)
+{
+    int r = balance1;
+    balance1 = balance2;
+    balance2 = r;
+}
+
+bool TryBuy(int balance, int buySum, out int newBalance)
+{
+    if (balance - buySum < 0)
+    {
+        newBalance = balance;
+        return false;
+    }
+
+    newBalance = balance - buySum;
+    return true;
+}
+
+//ref ибо меняем значение
+void AddBalance(ref int balance, int sum)
+{
+    balance += sum;
+}
+
+//необязательный ибо выводить ли баланс?
+// in чтобы не менять да
+void UserBalanceInfo(in int balance, bool showBalance = false)
+{
+    if (showBalance) Console.WriteLine($"balance: {balance}");
+    else Console.WriteLine($"balance: **********");
+}
+
+//out ибо еще будет результат получилось ли а ref чтобы списать. можно было два ref но будут новые пусть балансики
+bool TryStillMoney(ref int balance, int stillCount, out int newBalance)
+{
+    if (balance - stillCount < 0)
+    {
+        newBalance = 0;
+        return false;
+    }
+
+    newBalance = stillCount;
+    balance = balance - stillCount;
+
+    return true;
+}
+
 struct CharacterStats {
     public string Name;
     public int Health;
